@@ -37,6 +37,7 @@ class DiscretePPO:
     def train_minibatch(self, SARTS_minibatch):
         S, A, R, T, S2 = SARTS_minibatch
         next_V = tf.where(T, tf.zeros((MINIBATCH,)), self.V(S2))
+        next_V = tf.stop_gradient(next_V)
         advantage = R + GAMMA * next_V - self.V(S)
         V_loss = tf.reduce_sum(advantage ** 2)
 
